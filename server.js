@@ -10,8 +10,9 @@ const CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "COLLEZ_ICI_VOTRE_CLIENT_ID";
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "COLLEZ_ICI_VOTRE_CLIENT_SECRET";
 const REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || "https://votre-domaine.com/auth/google/callback";
 const oauth2 = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
+app.get("/", (req, res) => { res.send("DECISION OS serveur en ligne"); });
 app.get("/auth/google", (req, res) => {
-  const url = oauth2.generateAuthUrl({ access_type: "offline", prompt: "consent", scope: ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.send", "profile", "email"] });
+  const url = oauth2.generateAuthUrl({ access_type: "offline", prompt: "consent", scope: ["https://www.googleapis.com/auth/gmail.readonly", "profile", "email"] });
   res.redirect(url);
 });
 app.get("/auth/google/callback", async (req, res) => {
@@ -33,4 +34,4 @@ app.get("/api/mails", async (req, res) => {
     res.json({ connecte: true, mails });
   } catch (e) { res.status(401).json({ connecte: false, message: "Non connecte - cliquez sur Connecter Gmail" }); }
 });
-app.listen(3000, () => console.log("DECISION OS serveur pret sur port 3000"));
+app.listen(process.env.PORT || 3000, () => console.log("DECISION OS serveur pret"));
