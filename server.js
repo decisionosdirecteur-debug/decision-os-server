@@ -20,6 +20,9 @@ app.get("/auth/google/callback", async (req, res) => {
   req.session.tokens = tokens;
   res.redirect("/briefing?connecte=1");
 });
+app.get("/briefing", (req, res) => {
+  res.send("<h1>DECISION OS - Gmail connecte</h1><p>Connexion reussie. Vos mails sont accessibles.</p><p><a href='/api/mails'>Voir les mails (JSON)</a></p>");
+});
 app.get("/api/mails", async (req, res) => {
   try {
     oauth2.setCredentials(req.session.tokens);
